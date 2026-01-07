@@ -1,14 +1,33 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
-import { Routes } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import api from "./api/api.js";
+import { useState, useEffect, use } from "react";
 
 function App() {
+  const [films, setFilms] = useState();
+
+  const getFilms = async () => {
+    try {
+      const response = await api.get("/films");
+
+      console.log(response.data);
+
+      setFilms(response.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    getFilms();
+  }, []);
+
   return (
-    <Routes>
-      <Route path="/" element={<>Hello World</>} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/home" element={<Home />} />
+      </Routes>
+    </>
   );
 }
 
